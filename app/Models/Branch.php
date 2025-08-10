@@ -11,6 +11,7 @@ class Branch extends Model
     use HasFactory;
 
     protected $fillable = [
+        'repository_id',
         'name',
     ];
 }
