@@ -31,7 +31,15 @@
         @foreach($mergedPullRequests as $pullRequest)
         <item>
             <title>{{ $pullRequest->title }}</title>
-            <description><![CDATA[{{ $pullRequest->body ?? 'No description provided.' }}]]></description>
+            <description><![CDATA[
+                @if($pullRequest->body)
+                {!! Str::of($pullRequest->body)
+                ->markdown()
+                ->toString() !!}
+                @else
+                No description provided.
+                @endif
+                ]]></description>
             <link>{{ $pullRequest->url }}</link>
             <guid isPermaLink="true">{{ $pullRequest->url }}</guid>
             <pubDate>{{ $pullRequest->merged_at->toRssString() }}</pubDate>
