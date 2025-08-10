@@ -10,6 +10,7 @@
         "filament/filament": "^4.0",
         "graham-campbell/github": "^13.0",
         "laravel/framework": "^12.0",
+        "laravel/nightwatch": "^1.11",
         "laravel/tinker": "^2.10.1"
     },
     "require-dev": {
