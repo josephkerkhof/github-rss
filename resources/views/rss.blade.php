@@ -44,19 +44,10 @@
             <guid isPermaLink="true">{{ $pullRequest->url }}</guid>
             <pubDate>{{ $pullRequest->merged_at->toRssString() }}</pubDate>
 
-            {{-- Include pull request number in the description or as custom element --}}
-            @if($pullRequest->number)
-            <category>PR #{{ $pullRequest->number }}</category>
-            @endif
-
             {{-- If you have author relationship loaded, you can use it --}}
             @if(isset($pullRequest->author) && $pullRequest->author)
             <author>{{ $pullRequest->author->username }}</author>
-            @endif
-
-            {{-- Add GitHub profile as a source element --}}
-            @if($pullRequest->author->profile_url)
-            <source url="{{ $pullRequest->author->profile_url }}">{{ $pullRequest->author->username ?? 'Unknown Author' }} on GitHub</source>
+            <category>{{ $pullRequest->author->username }}</category>
             @endif
 
             {{-- If you have repository relationship loaded --}}
