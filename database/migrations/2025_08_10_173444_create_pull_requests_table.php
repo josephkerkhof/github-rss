@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreignIdFor(Author::class);
             $table->string('number');
             $table->string('title');
-            $table->text('body');
+            $table->text('body')->nullable();
             $table->string('url');
             $table->timestamp('merged_at');
             $table->timestamps();
