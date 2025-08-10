@@ -37,6 +37,7 @@ class FetchPullRequests extends Command
             }
         });
 
+        $this->info('All pull requests fetched successfully.');
         return Command::SUCCESS;
     }
 
