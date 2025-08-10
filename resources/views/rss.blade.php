@@ -28,34 +28,42 @@
         </image>
         @endif
 
-        @foreach($mergedPullRequests as $mergedPullRequest)
+        @foreach($mergedPullRequests as $pullRequest)
         <item>
-            <title>{{ $mergedPullRequest['title'] }}</title>
-            <description><![CDATA[{{ $mergedPullRequest['description'] }}]]></description>
-            <link>{{ $mergedPullRequest['link'] }}</link>
-            <guid isPermaLink="{{ $mergedPullRequest['guid_is_permalink'] ?? 'true' }}">{{ $mergedPullRequest['guid'] ?? $mergedPullRequest['link'] }}</guid>
-            <pubDate>{{ $mergedPullRequest['pubDate'] }}</pubDate>
+            <title>{{ $pullRequest->title }}</title>
+            <description><![CDATA[{{ $pullRequest->body ?? 'No description provided.' }}]]></description>
+            <link>{{ $pullRequest->url }}</link>
+            <guid isPermaLink="true">{{ $pullRequest->url }}</guid>
+            <pubDate>{{ $pullRequest->merged_at->toRssString() }}</pubDate>
 
-            @if(isset($mergedPullRequest['author']))
-            <author>{{ $mergedPullRequest['author'] }}</author>
+            {{-- Include pull request number in the description or as custom element --}}
+            @if($pullRequest->number)
+            <category>PR #{{ $pullRequest->number }}</category>
             @endif
 
-            @if(isset($mergedPullRequest['category']))
-            @if(is_array($mergedPullRequest['category']))
-            @foreach($mergedPullRequest['category'] as $category)
-            <category>{{ $category }}</category>
-            @endforeach
-            @else
-            <category>{{ $mergedPullRequest['category'] }}</category>
-            @endif
+            {{-- If you have author relationship loaded, you can use it --}}
+            @if(isset($pullRequest->author) && $pullRequest->author)
+            <author>{{ $pullRequest->author->username }}</author>
             @endif
 
-            @if(isset($mergedPullRequest['enclosure']))
-            <enclosure url="{{ $mergedPullRequest['enclosure']['url'] }}" length="{{ $mergedPullRequest['enclosure']['length'] }}" type="{{ $mergedPullRequest['enclosure']['type'] }}" />
+            {{-- Add GitHub profile as a source element --}}
+            @if($pullRequest->author->profile_url)
+            <source url="{{ $pullRequest->author->profile_url }}">{{ $pullRequest->author->username ?? 'Unknown Author' }} on GitHub</source>
             @endif
 
-            @if(isset($mergedPullRequest['source']))
-            <source url="{{ $mergedPullRequest['source']['url'] }}">{{ $mergedPullRequest['source']['name'] }}</source>
+            {{-- If you have repository relationship loaded --}}
+            @if(isset($pullRequest->repository) && $pullRequest->repository)
+            <category>{{ $pullRequest->repository->name }}</category>
+            @endif
+
+            {{-- If you have branch relationship loaded --}}
+            @if(isset($pullRequest->branch) && $pullRequest->branch)
+            <category>Target Branch: {{ $pullRequest->branch->name }}</category>
+            @endif
+
+            {{-- Custom elements for additional PR data --}}
+            @if($pullRequest->created_at)
+            <source url="{{ $pullRequest->url }}">Created: {{ $pullRequest->created_at->toRssString() }}</source>
             @endif
         </item>
         @endforeach

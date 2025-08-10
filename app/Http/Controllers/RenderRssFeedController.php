@@ -10,6 +10,11 @@ class RenderRssFeedController extends Controller
     {
         $mergedPullRequests = PullRequest::query()
             ->whereHas('repository', fn ($query) => $query->where('slug', "{$owner}/{$repo}"))
+            ->with([
+                'author',
+                'repository',
+                'branch'
+            ])
             ->get();
 
         return response()
