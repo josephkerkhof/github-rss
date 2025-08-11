@@ -5,6 +5,8 @@ namespace App\Filament\Resources\Repositories\Tables;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -18,6 +20,12 @@ class RepositoriesTable
                     ->searchable(),
                 TextColumn::make('slug')
                     ->searchable(),
+                IconColumn::make('id') // workaround for wanting to use the slug field twice
+                    ->icon(Heroicon::Rss)
+                    ->label('RSS Feed')
+                    ->url(fn ($record) => config('app.url') . '/repos/' . $record->slug . '/pulls/merged.rss')
+                    ->openUrlInNewTab()
+                    ->tooltip('Open RSS feed'),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
