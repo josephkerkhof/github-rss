@@ -15,6 +15,8 @@ class RenderRssFeedController extends Controller
                 'repository',
                 'branch'
             ])
+            ->latest('id')
+            ->limit(20)
             ->get();
 
         return response()
