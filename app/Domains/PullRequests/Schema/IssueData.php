@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domains\PullRequests\Schema;
 
 use Spatie\LaravelData\Data;
