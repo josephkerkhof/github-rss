@@ -9,7 +9,7 @@ class RenderRssFeedController extends Controller
     public function __invoke(string $owner, string $repo)
     {
         $mergedPullRequests = PullRequest::query()
-            ->whereHas('repository', fn ($query) => $query->where('slug', "{$owner}/{$repo}"))
+            ->whereHas('repository', fn ($query) => $query->where('owner', $owner)->where('repo', $repo))
             ->with([
                 'author',
                 'repository',
