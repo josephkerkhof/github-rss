@@ -22,6 +22,10 @@ class PullRequest extends Model
         'merged_at',
     ];
 
+    protected $attributes = [
+        'body' => null,
+    ];
+
     protected $casts = [
         'merged_at' => 'datetime',
     ];
