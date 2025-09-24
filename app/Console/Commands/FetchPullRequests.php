@@ -2,13 +2,15 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Author;
-use App\Models\Branch;
+use App\Domains\PullRequests\Commands\CreatePullRequestCommand;
+use App\Domains\PullRequests\Enums\IssueFilter;
+use App\Domains\PullRequests\Retrievers\IssueRetriever;
+use App\Domains\PullRequests\Retrievers\PullRequestRetriever;
+use App\Domains\PullRequests\Schema\PullRequestData;
 use App\Models\PullRequest;
 use App\Models\Repository;
-use GrahamCampbell\GitHub\Facades\GitHub;
 use Illuminate\Console\Command;
-use Str;
+use Illuminate\Support\Collection;
 
 class FetchPullRequests extends Command
 {
@@ -25,6 +27,14 @@ class FetchPullRequests extends Command
      * @var string
      */
     protected $description = 'Fetches the latest pull requests from GitHub and stores them in the database.';
+
+    public function __construct(
+        private readonly IssueRetriever $issueRetriever,
+        private readonly PullRequestRetriever $pullRequestRetriever,
+        private readonly CreatePullRequestCommand $createPullRequestCommand,
+    ) {
+        parent::__construct();
+    }
 
     /**
      * Execute the console command.
@@ -43,62 +53,27 @@ class FetchPullRequests extends Command
 
     private function fetchByRepository(Repository $repository): void
     {
-        $this->info("Fetching merged pull requests for repository: {$repository->name}");
-
-        $pullRequests = GitHub::search()->issues(
-            "repo:{$repository->slug} is:pr is:merged",
-        );
-        $mergedPullRequestsUrls = collect($pullRequests['items'])->pluck('pull_request.html_url');
-
-        foreach ($mergedPullRequestsUrls as $url) {
-            $this->fetchMergeRequestByUrl($repository, $url);
-        }
-    }
-
-    private function fetchMergeRequestByUrl(Repository $repository, string $url): void
-    {
-        $number = Str::of($url)->afterLast('/')->toString();
-
-        $pullRequestAlreadyExists = PullRequest::query()
-            ->whereBelongsTo($repository)
-            ->where('number', $number)
-            ->exists();
-
-        if ($pullRequestAlreadyExists) {
-            $this->info("Pull request #{$number} already exists. Skipping.");
-
-            return;
-        }
-
-        $pullRequestDetails = GitHub::pullRequests()->show('laravel', 'framework', $number);
-
-        $branch = Branch::firstOrCreate(
-            [
-                'repository_id' => $repository->id,
-                'name' => $pullRequestDetails['base']['ref'],
-            ]
-        );
-
-        $author = Author::firstOrCreate(
-            [
-                'username' => $pullRequestDetails['user']['login']
-            ],
-            [
-                'profile_url' => $pullRequestDetails['user']['html_url'],
-            ]
-        );
-
-        PullRequest::create([
-            'repository_id' => $repository->id,
-            'branch_id' => $branch->id,
-            'author_id' => $author->id,
-            'number' => $number,
-            'title' => $pullRequestDetails['title'],
-            'body' => $pullRequestDetails['body'],
-            'url' => $pullRequestDetails['html_url'],
-            'merged_at' => $pullRequestDetails['merged_at'],
+        $filters = new Collection([
+            IssueFilter::IS_PR,
+            IssueFilter::IS_MERGED
         ]);
 
-        $this->info("Pull request #{$number} fetched successfully.");
+        $mergedPullRequests = $this->issueRetriever->retrieve($repository, $filters);
+
+        $alreadyExistingPullRequests = PullRequest::query()
+            ->whereBelongsTo($repository)
+            ->whereIn('number', $mergedPullRequests->pluck('number'))
+            ->get();
+
+        $pullRequestsToFetch = $mergedPullRequests
+            ->reject(fn ($pullRequest) => $alreadyExistingPullRequests->contains('number', $pullRequest->number));
+
+        /** @var Collection<int, PullRequestData> $fetchedPullRequests */
+        $fetchedPullRequests = new Collection();
+        foreach ($pullRequestsToFetch as $pullRequest) {
+            $fetchedPullRequests->push($this->pullRequestRetriever->retrieve($repository, $pullRequest));
+        }
+
+        $this->createPullRequestCommand->handle($repository, $fetchedPullRequests);
     }
 }
