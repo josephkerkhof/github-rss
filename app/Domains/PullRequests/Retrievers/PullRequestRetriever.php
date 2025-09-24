@@ -19,6 +19,7 @@ final readonly class PullRequestRetriever
 
     public function retrieve(Repository $repository, IssueData $issue): PullRequestData
     {
+        // @phpstan-ignore-next-line - GitHub facade is not typed correctly
         $pullRequestDetails = GitHub::pullRequests()->show($repository->owner, $repository->repo, $issue->number);
 
         return $this->mapper->map($pullRequestDetails);

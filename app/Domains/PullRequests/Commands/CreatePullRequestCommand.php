@@ -6,6 +6,7 @@ namespace App\Domains\PullRequests\Commands;
 
 use App\Domains\PullRequests\Schema\PullRequestData;
 use App\Models\Author;
+use App\Models\Branch;
 use App\Models\Repository;
 use Illuminate\Support\Collection;
 
@@ -16,7 +17,9 @@ final readonly class CreatePullRequestCommand
      */
     public function handle(Repository $repository, Collection $pullRequests): void
     {
+        // TODO refactor this to not loop
         $pullRequests->each(function(PullRequestData $pullRequest) use ($repository): void {
+            /** @var Branch $branch */
             $branch = $repository->branches()->firstOrCreate([
                 'name' => $pullRequest->targetBranchName,
             ]);

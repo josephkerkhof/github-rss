@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 /**
  * @property string $name
  * @property string $owner
+ * @property string $slug
  * @property string $repo
  */
 class Repository extends Model

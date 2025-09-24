@@ -20,7 +20,7 @@ final readonly class IssueRetriever
     }
 
     /**
-     * @param ?Collection<int, IssueFilter> $filters
+     * @param ?Collection<int, covariant IssueFilter> $filters
      * @return Collection<int, IssueData>
      */
     public function retrieve(Repository $repository, ?Collection $filters): Collection
@@ -29,6 +29,7 @@ final readonly class IssueRetriever
 
         $filters = $filters->map(fn (IssueFilter $filter) => $filter->value)->implode(' ');
 
+        // @phpstan-ignore-next-line - GitHub facade is not typed correctly
         $issuesResponse = GitHub::search()->issues("repo:{$repository->slug} $filters");
 
         return collect($issuesResponse['items'])->map($this->mapper->map(...));
