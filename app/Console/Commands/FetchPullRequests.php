@@ -41,7 +41,7 @@ class FetchPullRequests extends Command
      */
     public function handle(): bool
     {
-        Repository::all()->chunk(100)->each(function ($chunk) {
+        Repository::all()->chunk(100)->each(function ($chunk): void {
             foreach ($chunk as $repository) {
                 $this->fetchByRepository($repository);
             }

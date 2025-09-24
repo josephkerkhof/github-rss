@@ -14,7 +14,7 @@ final readonly class CreatePullRequestCommand
      */
     public function handle(Repository $repository, Collection $pullRequests): void
     {
-        $pullRequests->each(function(PullRequestData $pullRequest) use ($repository) {
+        $pullRequests->each(function(PullRequestData $pullRequest) use ($repository): void {
             $branch = $repository->branches()->firstOrCreate([
                 'name' => $pullRequest->targetBranchName,
             ]);
