@@ -13,6 +13,7 @@ use App\Models\PullRequest;
 use App\Models\Repository;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
+use Symfony\Component\Console\Command\Command as CommandAlias;
 
 class FetchPullRequests extends Command
 {
@@ -41,7 +42,7 @@ class FetchPullRequests extends Command
     /**
      * Execute the console command.
      */
-    public function handle(): bool
+    public function handle(): int
     {
         Repository::all()->chunk(100)->each(function ($chunk): void {
             foreach ($chunk as $repository) {
@@ -50,7 +51,7 @@ class FetchPullRequests extends Command
         });
 
         $this->info('All pull requests fetched successfully.');
-        return Command::SUCCESS;
+        return CommandAlias::SUCCESS;
     }
 
     private function fetchByRepository(Repository $repository): void
