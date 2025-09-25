@@ -6,6 +6,9 @@ namespace App\Domains\PullRequests\Schema;
 
 use Spatie\LaravelData\Data;
 
+/**
+ * @codeCoverageIgnore
+ */
 final class AuthorData extends Data
 {
     public function __construct(
