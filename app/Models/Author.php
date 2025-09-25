@@ -6,8 +6,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Author extends Model
+final class Author extends Model
 {
     /** @use HasFactory<\Database\Factories\AuthorFactory> */
     use HasFactory;
@@ -16,4 +17,9 @@ class Author extends Model
         'username',
         'profile_url'
     ];
+
+    public function pullRequests(): HasMany
+    {
+        return $this->hasMany(PullRequest::class);
+    }
 }
