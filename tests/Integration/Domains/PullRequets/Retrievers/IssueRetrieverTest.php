@@ -51,7 +51,7 @@ final class IssueRetrieverTest extends TestCase
 
         // Then
         self::assertEquals(1, $this->spy->methodCallCount['retrieveIssues']);
-        self::assertEquals('repo:laravel/framework', $this->spy->query);
+        self::assertEquals('repo:laravel/framework', $this->spy->parameters['query']);
     }
 
     #[Test]
@@ -72,6 +72,6 @@ final class IssueRetrieverTest extends TestCase
 
         // Then
         self::assertEquals(1, $this->spy->methodCallCount['retrieveIssues']);
-        self::assertEquals('repo:laravel/framework is:merged is:pr', $this->spy->query);
+        self::assertEquals('repo:laravel/framework is:merged is:pr', $this->spy->parameters['query']);
     }
 }

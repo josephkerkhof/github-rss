@@ -11,9 +11,8 @@ final class GitHubRetrieverSpy implements GitHubRetrieverInterface
 {
     use InitializesCallCounts;
 
-    public string $query;
-    public string $sort;
-    public string $order;
+    public array $parameters;
+
     public array $methodCallCount;
 
     public function __construct()
@@ -23,11 +22,28 @@ final class GitHubRetrieverSpy implements GitHubRetrieverInterface
 
     public function retrieveIssues(string $query, string $sort = 'updated', string $order = 'desc'): array
     {
-        $this->query = $query;
-        $this->sort = $sort;
-        $this->order = $order;
+        $this->parameters = [
+            'query' => $query,
+            'sort' => $sort,
+            'order' => $order,
+        ];
 
         $this->methodCallCount['retrieveIssues']++;
+
+        return [
+            'items' => []
+        ];
+    }
+
+    public function retrievePullRequest(string $owner, string $repo, int $number): array
+    {
+        $this->parameters = [
+            'owner' => $owner,
+            'repo' => $repo,
+            'number' => $number,
+        ];
+
+        $this->methodCallCount['retrievePullRequest']++;
 
         return [
             'items' => []

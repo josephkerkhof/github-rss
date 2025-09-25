@@ -18,4 +18,10 @@ final readonly class GitHubRetriever implements GitHubRetrieverInterface
             $order
         );
     }
+
+    public function retrievePullRequest(string $owner, string $repo, int $number): array
+    {
+        // @phpstan-ignore-next-line - GitHub facade is not typed correctly
+        return GitHub::pullRequests()->show($owner, $repo, $number);
+    }
 }
