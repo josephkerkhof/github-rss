@@ -18,7 +18,8 @@ class RepositoryFactory extends Factory
     {
         return [
             'name' => fake()->name(),
-            'slug' => fake()->word() . '/' . fake()->word(),
+            'owner' => fake()->word(),
+            'repo' => fake()->word(),
         ];
     }
 }
