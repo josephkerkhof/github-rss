@@ -20,6 +20,7 @@ return RectorConfig::configure()
     ->withTypeCoverageLevel(0)
     ->withDeadCodeLevel(0)
     ->withCodeQualityLevel(0)
+    ->withImportNames(removeUnusedImports: true)
     ->withRules([
-        DeclareStrictTypesRector::class
+        DeclareStrictTypesRector::class,
     ]);

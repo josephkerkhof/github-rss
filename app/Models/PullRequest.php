@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\PullRequestFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class PullRequest extends Model
 {
-    /** @use HasFactory<\Database\Factories\PullRequestFactory> */
+    /** @use HasFactory<PullRequestFactory> */
     use HasFactory;
 
     protected $fillable = [

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\RepositoryFactory;
 use Iksaku\Laravel\MassUpdate\MassUpdatable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -18,7 +19,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Repository extends Model
 {
-    /** @use HasFactory<\Database\Factories\RepositoryFactory> */
+    /** @use HasFactory<RepositoryFactory> */
     use HasFactory;
     use MassUpdatable;
 
