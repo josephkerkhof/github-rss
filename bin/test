@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+
+set -e
+
+# Colors for output
+YELLOW='\033[1;33m'
+NC='\033[0m'
+
+print_info() {
+    echo -e "${YELLOW}→${NC} $1"
+}
+
+# Default values
+COVERAGE=false
+FILTER=""
+
+# Parse arguments
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --coverage|-c)
+            COVERAGE=true
+            shift
+            ;;
+        --filter|-f)
+            FILTER="--filter=$2"
+            shift 2
+            ;;
+        --help|-h)
+            echo "Usage: $0 [options]"
+            echo ""
+            echo "Options:"
+            echo "  --coverage, -c       Generate code coverage report"
+            echo "  --filter, -f <name>  Filter tests by name"
+            echo "  --help, -h           Show this help message"
+            echo ""
+            echo "Examples:"
+            echo "  $0                   Run all tests"
+            echo "  $0 --coverage        Run tests with coverage"
+            echo "  $0 --filter UserTest Run only UserTest"
+            exit 0
+            ;;
+        *)
+            # Pass any other arguments directly to PHPUnit
+            break
+            ;;
+    esac
+done
+
+print_info "Running tests..."
+
+if [ "$COVERAGE" = true ]; then
+    docker-compose exec -T app php vendor/bin/pest --parallel --coverage $FILTER "$@"
+else
+    docker-compose exec -T app php vendor/bin/pest --parallel $FILTER "$@"
+fi
