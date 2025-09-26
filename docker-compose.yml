@@ -1,0 +1,113 @@
+services:
+    app:
+        build:
+            context: .
+            dockerfile: docker/php/Dockerfile
+        container_name: laravel-app
+        restart: unless-stopped
+        working_dir: /var/www
+        volumes:
+            - ./:/var/www
+            - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+        networks:
+            - laravel
+        depends_on:
+            - mysql
+            - redis
+        environment:
+            - PHP_IDE_CONFIG=serverName=laravel-app
+            - XDEBUG_CONFIG=client_host=host.docker.internal
+            - XDEBUG_MODE=develop,debug,coverage
+            - XDEBUG_SESSION=1
+
+    webserver:
+        image: nginx:alpine
+        container_name: laravel-nginx
+        restart: unless-stopped
+        ports:
+            - "8000:80"
+            - "8443:443"
+        volumes:
+            - ./:/var/www
+            - ./docker/nginx/conf.d:/etc/nginx/conf.d
+        networks:
+            - laravel
+        depends_on:
+            - app
+
+    mysql:
+        image: mysql:8.0
+        container_name: laravel-mysql
+        restart: unless-stopped
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_DATABASE: ${DB_DATABASE:-laravel}
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-secret}
+            MYSQL_PASSWORD: ${DB_PASSWORD:-secret}
+            MYSQL_USER: ${DB_USERNAME:-laravel}
+            SERVICE_TAGS: dev
+            SERVICE_NAME: mysql
+        volumes:
+            - mysql-data:/var/lib/mysql
+            - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
+        networks:
+            - laravel
+
+    redis:
+        image: redis:7-alpine
+        container_name: laravel-redis
+        restart: unless-stopped
+        ports:
+            - "6379:6379"
+        volumes:
+            - redis-data:/data
+        networks:
+            - laravel
+        command: redis-server --appendonly yes --replica-read-only no
+
+    queue:
+        build:
+            context: .
+            dockerfile: docker/php/Dockerfile
+        container_name: laravel-queue
+        restart: unless-stopped
+        working_dir: /var/www
+        command: php artisan queue:work --sleep=3 --tries=3 --max-time=3600
+        volumes:
+            - ./:/var/www
+            - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+        networks:
+            - laravel
+        depends_on:
+            - app
+            - mysql
+            - redis
+
+    scheduler:
+        build:
+            context: .
+            dockerfile: docker/php/Dockerfile
+        container_name: laravel-scheduler
+        restart: unless-stopped
+        working_dir: /var/www
+        command: /bin/sh -c "while [ true ]; do php artisan schedule:run --verbose --no-interaction & sleep 60; done"
+        volumes:
+            - ./:/var/www
+            - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+        networks:
+            - laravel
+        depends_on:
+            - app
+            - mysql
+            - redis
+
+networks:
+    laravel:
+        driver: bridge
+
+volumes:
+    mysql-data:
+        driver: local
+    redis-data:
+        driver: local
