@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Doubles\Traits;
+namespace Tests\Doubles\Concerns;
 
 use ReflectionClass;
 use ReflectionMethod;

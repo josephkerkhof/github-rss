@@ -4,24 +4,26 @@ declare(strict_types=1);
 
 namespace App\Domains\PullRequests\Mappers;
 
+use App\Domains\PullRequests\Mappers\Contracts\GitHubPullRequestResponseToPullRequestDataMapperInterface;
 use App\Domains\PullRequests\Schema\AuthorData;
 use App\Domains\PullRequests\Schema\PullRequestData;
+use Carbon\CarbonImmutable;
 
-final readonly class GitHubPullRequestResponseToPullRequestDataMapper
+final readonly class GitHubPullRequestResponseToPullRequestDataMapper implements GitHubPullRequestResponseToPullRequestDataMapperInterface
 {
-    public function map(array $pullRequestResponse): PullRequestData
+    public function map(array $input): PullRequestData
     {
         return new PullRequestData(
             author: new AuthorData(
-                username: $pullRequestResponse['user']['login'],
-                profileUrl: $pullRequestResponse['user']['html_url'],
+                username: $input['user']['login'],
+                profileUrl: $input['user']['html_url'],
             ),
-            targetBranchName: $pullRequestResponse['base']['ref'],
-            number: $pullRequestResponse['number'],
-            title: $pullRequestResponse['title'],
-            body: $pullRequestResponse['body'],
-            url: $pullRequestResponse['html_url'],
-            mergedAt: $pullRequestResponse['merged_at'],
+            targetBranchName: $input['base']['ref'],
+            number: $input['number'],
+            title: $input['title'],
+            body: $input['body'],
+            url: $input['html_url'],
+            mergedAt: CarbonImmutable::parse($input['merged_at']),
         );
     }
 }

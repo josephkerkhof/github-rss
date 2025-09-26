@@ -6,7 +6,7 @@ namespace App\Domains\PullRequests\Retrievers;
 
 use App\Common\Contracts\GitHubRetrieverInterface;
 use App\Domains\PullRequests\Enums\IssueFilter;
-use App\Domains\PullRequests\Mappers\GitHubIssueResponseToIssueDataMapper;
+use App\Domains\PullRequests\Mappers\Contracts\GitHubIssueResponseToIssueDataMapperInterface;
 use App\Domains\PullRequests\Schema\IssueData;
 use App\Models\Repository;
 use Illuminate\Support\Collection;
@@ -16,7 +16,7 @@ final readonly class IssueRetriever
 {
     public function __construct(
         private GitHubRetrieverInterface $retriever,
-        private GitHubIssueResponseToIssueDataMapper $mapper,
+        private GitHubIssueResponseToIssueDataMapperInterface $mapper,
     ) {
     }
 
@@ -36,6 +36,8 @@ final readonly class IssueRetriever
 
         $issuesResponse = $this->retriever->retrieveIssues($query);
 
-        return collect($issuesResponse['items'])->map($this->mapper->map(...));
+        return collect($issuesResponse['items'])->map(
+            $this->mapper->map(...)
+        );
     }
 }

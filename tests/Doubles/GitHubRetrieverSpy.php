@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Doubles;
 
 use App\Common\Contracts\GitHubRetrieverInterface;
-use Tests\Doubles\Traits\InitializesCallCounts;
+use Tests\Doubles\Concerns\InitializesCallCounts;
 
 final class GitHubRetrieverSpy implements GitHubRetrieverInterface
 {
@@ -45,8 +45,6 @@ final class GitHubRetrieverSpy implements GitHubRetrieverInterface
 
         $this->methodCallCount['retrievePullRequest']++;
 
-        return [
-            'items' => []
-        ];
+        return [];
     }
 }

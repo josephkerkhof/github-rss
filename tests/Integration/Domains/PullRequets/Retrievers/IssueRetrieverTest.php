@@ -6,7 +6,6 @@ namespace Tests\Integration\Domains\PullRequets\Retrievers;
 
 use App\Common\Contracts\GitHubRetrieverInterface;
 use App\Domains\PullRequests\Enums\IssueFilter;
-use App\Domains\PullRequests\Mappers\GitHubIssueResponseToIssueDataMapper;
 use App\Domains\PullRequests\Retrievers\IssueRetriever;
 use App\Models\Repository;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
@@ -14,6 +13,7 @@ use Illuminate\Support\Collection;
 use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
+use Tests\Doubles\GitHubIssueResponseToIssueDataMapperStub;
 use Tests\Doubles\GitHubRetrieverSpy;
 use Tests\TestCase;
 
@@ -33,7 +33,7 @@ final class IssueRetrieverTest extends TestCase
         $this->spy = new GitHubRetrieverSpy();
         $this->retriever = new IssueRetriever(
             $this->spy,
-            new GitHubIssueResponseToIssueDataMapper()
+            new GitHubIssueResponseToIssueDataMapperStub()
         );
     }
 

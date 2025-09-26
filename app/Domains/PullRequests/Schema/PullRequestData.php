@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\PullRequests\Schema;
 
+use Carbon\CarbonImmutable;
 use Spatie\LaravelData\Data;
 
 /**
@@ -18,7 +19,7 @@ final class PullRequestData extends Data
         public readonly string $title,
         public readonly string $body,
         public readonly string $url,
-        public readonly string $mergedAt,
+        public readonly CarbonImmutable $mergedAt,
     ) {
     }
 }
