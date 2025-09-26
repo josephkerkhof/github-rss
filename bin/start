@@ -111,7 +111,7 @@ print_success "Database migrations completed"
 # Step 5: Optionally seed the database
 if [ "$SEED_DATABASE" = true ]; then
     print_info "Seeding the database..."
-    docker-compose exec -T app php artisan db:seed --force --ansi
+    docker-compose exec -T app php artisan migrate:fresh --seeder=DatabaseSeeder --force --ansi
     print_success "Database seeding completed"
 fi
 
