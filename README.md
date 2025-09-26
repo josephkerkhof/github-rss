@@ -10,6 +10,25 @@ While the core functionality could be implemented simply, this project intention
 - **Test Pyramid Implementation**: Emphasizing integration tests over unit tests for better confidence in system behavior
 - **High Coverage**: All critical paths covered with meaningful tests
 
+##  🧪 Test Method Naming Convention
+
+This project employs a Given-When-Then approach to test method naming in PHPUnit, making test intentions immediately clear:
+
+```php
+public function repositoryWithoutAuthorAndBranch_handle_createsAuthorAndBranchAndRepository()
+public function userWithExistingSubscription_subscribe_throwsAlreadySubscribedException()
+public function validRepositoryData_createRepository_returnsRepositoryEntity()
+```
+
+Structure: `{given_condition}_{when_action}_{then_expected_outcome}`
+
+This naming convention provides several benefits:
+
+- **Self-documenting tests**: The method name serves as living documentation
+- **Clear test scope**: Each test's preconditions and expected outcomes are explicit
+- **Improved maintainability**: Developers can quickly understand test purpose without reading implementation
+- **Better failure reporting**: Failed test names immediately communicate what business scenario broke
+
 ### 🔄 CQRS Pattern Implementation
 - **Command Query Responsibility Segregation**: Clean separation between read and write operations
 - **Scalable Architecture**: Designed for maintainability and future extension
