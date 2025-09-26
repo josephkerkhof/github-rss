@@ -14,11 +14,6 @@ services:
         depends_on:
             - mysql
             - redis
-        environment:
-            - PHP_IDE_CONFIG=serverName=laravel-app
-            - XDEBUG_CONFIG=client_host=host.docker.internal
-            - XDEBUG_MODE=develop,debug,coverage
-            - XDEBUG_SESSION=1
 
     webserver:
         image: nginx:alpine
