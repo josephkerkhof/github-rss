@@ -47,7 +47,34 @@ This project serves as a foundation for demonstrating additional enterprise patt
 
 ## Getting Started
 
-*[Development instructions will be added as the project evolves]*
+### Initial Setup
+
+```bash
+# Starting and stopping the environment
+bin/start          # Basic setup
+bin/start --seed   # Setup with database seeding (this will wipe out the existing database content)
+bin/stop           # Stop containers
+```
+
+### Daily Development
+
+```bash
+bin/artisan tinker   # Run tinker
+bin/composer <...>   # Run composer
+```
+
+### Testing
+
+```bash
+bin/test                     # Run all tests
+bin/test --coverage          # Run with coverage
+```
+
+### Database Management
+
+```bash
+bin/artisan migrate          # Run migrations
+```
 
 ---
 
