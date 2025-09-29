@@ -8,8 +8,9 @@ use App\Domains\PullRequests\Retrievers\Contracts\IssueRetrieverInterface;
 use App\Domains\PullRequests\Retrievers\Contracts\PullRequestRetrieverInterface;
 use App\Models\Repository;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
+use Illuminate\Support\Collection;
 use Tests\Doubles\CreatePullRequestCommandSpy;
-use Tests\Doubles\IssueRetrieverSpy;
+use Tests\Doubles\IssueRetrieverFake;
 use Tests\Doubles\PullRequestRetrieverSpy;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
@@ -20,9 +21,9 @@ final class FetchPullRequestsTest extends TestCase
 {
     use LazilyRefreshDatabase;
 
-    private IssueRetrieverSpy $issueRetrieverSpy;
+    private IssueRetrieverFake $issueRetrieverFake;
 
-    private PullRequestRetrieverSpy $pullRequestRetrieverSpy;
+    private PullRequestRetrieverSpy $pullRequestRetrieverFake;
 
     private CreatePullRequestCommandSpy $createPullRequestCommandSpy;
 
@@ -30,12 +31,12 @@ final class FetchPullRequestsTest extends TestCase
     {
         parent::setUp();
 
-        $this->issueRetrieverSpy = new IssueRetrieverSpy();
-        $this->pullRequestRetrieverSpy = new PullRequestRetrieverSpy();
+        $this->issueRetrieverFake = new IssueRetrieverFake();
+        $this->pullRequestRetrieverFake = new PullRequestRetrieverSpy();
         $this->createPullRequestCommandSpy = new CreatePullRequestCommandSpy();
 
-        $this->app->instance(IssueRetrieverInterface::class, $this->issueRetrieverSpy);
-        $this->app->instance(PullRequestRetrieverInterface::class, $this->pullRequestRetrieverSpy);
+        $this->app->instance(IssueRetrieverInterface::class, $this->issueRetrieverFake);
+        $this->app->instance(PullRequestRetrieverInterface::class, $this->pullRequestRetrieverFake);
         $this->app->instance(CreatePullRequestCommandInterface::class, $this->createPullRequestCommandSpy);
     }
 
@@ -44,15 +45,16 @@ final class FetchPullRequestsTest extends TestCase
     {
         // Given
         Repository::factory()->create();
+        $this->issueRetrieverFake->retrievedIssues = new Collection();
 
         // When
         $this->artisan('app:fetch-pull-requests');
 
         // Then the retriever was called once
-        self::assertEquals(1, $this->issueRetrieverSpy->methodCallCount['retrieve']);
+        self::assertEquals(1, $this->issueRetrieverFake->methodCallCount['retrieve']);
 
         // and since no pull requests were found, the subsequent retriever and command was not called
-        self::assertEquals(0, $this->pullRequestRetrieverSpy->methodCallCount['retrieve']);
+        self::assertEquals(0, $this->pullRequestRetrieverFake->methodCallCount['retrieve']);
         self::assertEquals(0, $this->createPullRequestCommandSpy->methodCallCount['handle']);
     }
 }

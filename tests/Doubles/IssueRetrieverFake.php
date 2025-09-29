@@ -7,13 +7,15 @@ use App\Models\Repository;
 use Illuminate\Support\Collection;
 use Tests\Doubles\Concerns\InitializesCallCounts;
 
-final class IssueRetrieverSpy implements IssueRetrieverInterface
+final class IssueRetrieverFake implements IssueRetrieverInterface
 {
     use InitializesCallCounts;
 
     public array $parameters;
 
     public array $methodCallCount;
+
+    public Collection $retrievedIssues;
 
     public function __construct()
     {
@@ -32,6 +34,6 @@ final class IssueRetrieverSpy implements IssueRetrieverInterface
 
         $this->methodCallCount['retrieve']++;
 
-        return collect();
+        return $this->retrievedIssues;
     }
 }
