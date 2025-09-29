@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Repositories;
 
+use Override;
 use App\Filament\Resources\Repositories\Pages\CreateRepository;
 use App\Filament\Resources\Repositories\Pages\EditRepository;
 use App\Filament\Resources\Repositories\Pages\ListRepositories;
@@ -24,16 +25,19 @@ class RepositoryResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
+    #[Override]
     public static function form(Schema $schema): Schema
     {
         return RepositoryForm::configure($schema);
     }
 
+    #[Override]
     public static function table(Table $table): Table
     {
         return RepositoriesTable::configure($table);
     }
 
+    #[Override]
     public static function getRelations(): array
     {
         return [
