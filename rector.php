@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Rector\CodingStyle\Rector\Stmt\NewlineAfterStatementRector;
 use Rector\Config\RectorConfig;
 use Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRector;
 use Rector\TypeDeclaration\Rector\StmtsAwareInterface\DeclareStrictTypesRector;
@@ -25,4 +26,5 @@ return RectorConfig::configure()
     ->withRules([
         DeclareStrictTypesRector::class,
         AddOverrideAttributeToOverriddenMethodsRector::class,
+        NewlineAfterStatementRector::class,
     ]);

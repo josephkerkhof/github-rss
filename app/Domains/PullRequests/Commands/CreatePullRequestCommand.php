@@ -139,6 +139,7 @@ final readonly class CreatePullRequestCommand implements CreatePullRequestComman
 
                     throw new LogicException($message);
                 }
+
                 return [$pullRequest->number => $author];
             });
     }
