@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Doubles;
 
 use App\Domains\PullRequests\Retrievers\Contracts\IssueRetrieverInterface;
+use App\Domains\PullRequests\Schema\IssueData;
 use App\Models\Repository;
 use Illuminate\Support\Collection;
 use Tests\Doubles\Concerns\InitializesCallCounts;
@@ -15,6 +18,7 @@ final class IssueRetrieverFake implements IssueRetrieverInterface
 
     public array $methodCallCount;
 
+    /** @var Collection<int, IssueData> **/
     public Collection $retrievedIssues;
 
     public function __construct()

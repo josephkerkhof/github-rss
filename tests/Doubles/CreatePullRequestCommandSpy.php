@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Doubles;
 
 use App\Domains\PullRequests\Commands\Contracts\CreatePullRequestCommandInterface;
