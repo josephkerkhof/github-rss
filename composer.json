@@ -44,7 +44,7 @@
         "pre-commit": [
             "@php vendor/bin/rector --ansi",
             "@php vendor/bin/phpstan analyse",
-            "herd coverage ./vendor/bin/pest --coverage --parallel"
+            "@php vendor/bin/pest --coverage --parallel"
         ],
         "post-autoload-dump": [
             "@php artisan config:clear",
