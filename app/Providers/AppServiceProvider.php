@@ -23,13 +23,21 @@ use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
+    public array $bindings = [
+        CreatePullRequestCommandInterface::class => CreatePullRequestCommand::class,
+        GitHubRetrieverInterface::class => GitHubRetriever::class,
+        GitHubIssueResponseToIssueDataMapperInterface::class => GitHubIssueResponseToIssueDataMapper::class,
+        GitHubPullRequestResponseToPullRequestDataMapperInterface::class => GitHubPullRequestResponseToPullRequestDataMapper::class,
+        IssueRetrieverInterface::class => IssueRetriever::class,
+        PullRequestRetrieverInterface::class => PullRequestRetriever::class,
+    ];
+
     /**
      * Register any application services.
      */
     #[Override]
     public function register(): void
     {
-        $this->registerAppInterfaces();
         $this->registerTelescope();
     }
 
@@ -40,22 +48,6 @@ class AppServiceProvider extends ServiceProvider
     {
         // Use Carbon Immutable for timestamps
         Date::use(CarbonImmutable::class);
-    }
-
-    private function registerAppInterfaces(): void
-    {
-        $abstractsToConcrete = [
-            CreatePullRequestCommandInterface::class => CreatePullRequestCommand::class,
-            GitHubRetrieverInterface::class => GitHubRetriever::class,
-            GitHubIssueResponseToIssueDataMapperInterface::class => GitHubIssueResponseToIssueDataMapper::class,
-            GitHubPullRequestResponseToPullRequestDataMapperInterface::class => GitHubPullRequestResponseToPullRequestDataMapper::class,
-            IssueRetrieverInterface::class => IssueRetriever::class,
-            PullRequestRetrieverInterface::class => PullRequestRetriever::class,
-        ];
-
-        foreach ($abstractsToConcrete as $abstract => $concrete) {
-            $this->app->bind($abstract, $concrete);
-        }
     }
 
     private function registerTelescope(): void
