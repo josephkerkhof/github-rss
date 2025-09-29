@@ -59,8 +59,10 @@ bin/stop           # Stop containers
 ### Daily Development
 
 ```bash
-bin/artisan tinker   # Run tinker
-bin/composer <...>   # Run composer
+bin/aritsan <...>           # Run Artisan commands
+DEBUG=1 bin/aritsan <...>   # Run Artisan commands with xdebug
+bin/artisan tinker          # Run tinker
+bin/composer <...>          # Run composer
 ```
 
 ### Testing

@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
 
-# Pass all arguments to artisan inside the container
-docker-compose exec app php artisan "$@"
+# Check if DEBUG environment variable is set
+if [ "$DEBUG" = "1" ]; then
+    echo "🐛 Running with Xdebug enabled..."
+    docker-compose exec -e XDEBUG_TRIGGER=1 -e PHP_IDE_CONFIG="serverName=Laravel Docker" app php artisan "$@"
+else
+    docker-compose exec app php artisan "$@"
+fi

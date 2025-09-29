@@ -47,6 +47,9 @@ RUN pecl install redis && docker-php-ext-enable redis
 # Install Xdebug (3.4.0 supports PHP 8.4)
 RUN pecl install xdebug && docker-php-ext-enable xdebug
 
+# Copy Xdebug configuration
+COPY docker/php/xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+
 # Install PCOV for code coverage
 RUN pecl install pcov && docker-php-ext-enable pcov
 
