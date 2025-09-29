@@ -15,20 +15,10 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Symfony\Component\Console\Command\Command as CommandAlias;
 
-class FetchPullRequests extends Command
+final class FetchPullRequests extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'app:fetch-pull-requests';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'Fetches the latest pull requests from GitHub and stores them in the database.';
 
     public function __construct(
@@ -39,9 +29,6 @@ class FetchPullRequests extends Command
         parent::__construct();
     }
 
-    /**
-     * Execute the console command.
-     */
     public function handle(): int
     {
         Repository::all()->chunk(100)->each(function ($chunk): void {
@@ -75,6 +62,12 @@ class FetchPullRequests extends Command
         $fetchedPullRequests = new Collection();
         foreach ($pullRequestsToFetch as $pullRequest) {
             $fetchedPullRequests->push($this->pullRequestRetriever->retrieve($repository, $pullRequest));
+        }
+
+        if ($fetchedPullRequests->isEmpty()) {
+            $this->info("No new pull requests found for repository: {$repository->name}");
+
+            return;
         }
 
         $this->createPullRequestCommand->handle($repository, $fetchedPullRequests);
