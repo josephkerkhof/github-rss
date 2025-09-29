@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Domains\PullRequests\Commands;
 
+use App\Domains\PullRequests\Commands\Contracts\CreatePullRequestCommandInterface;
 use App\Domains\PullRequests\Schema\PullRequestData;
 use App\Models\Author;
 use App\Models\Branch;
 use App\Models\Repository;
 use Illuminate\Support\Collection;
 
-final readonly class CreatePullRequestCommand
+final readonly class CreatePullRequestCommand implements CreatePullRequestCommandInterface
 {
     /**
      * @param Collection<int, PullRequestData> $pullRequests

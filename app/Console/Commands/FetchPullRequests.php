@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Domains\PullRequests\Commands\CreatePullRequestCommand;
+use App\Domains\PullRequests\Commands\Contracts\CreatePullRequestCommandInterface;
 use App\Domains\PullRequests\Enums\IssueFilter;
-use App\Domains\PullRequests\Retrievers\IssueRetriever;
-use App\Domains\PullRequests\Retrievers\PullRequestRetriever;
+use App\Domains\PullRequests\Retrievers\Contracts\IssueRetrieverInterface;
+use App\Domains\PullRequests\Retrievers\Contracts\PullRequestRetrieverInterface;
 use App\Domains\PullRequests\Schema\PullRequestData;
 use App\Models\PullRequest;
 use App\Models\Repository;
@@ -32,9 +32,9 @@ class FetchPullRequests extends Command
     protected $description = 'Fetches the latest pull requests from GitHub and stores them in the database.';
 
     public function __construct(
-        private readonly IssueRetriever $issueRetriever,
-        private readonly PullRequestRetriever $pullRequestRetriever,
-        private readonly CreatePullRequestCommand $createPullRequestCommand,
+        private readonly IssueRetrieverInterface $issueRetriever,
+        private readonly PullRequestRetrieverInterface $pullRequestRetriever,
+        private readonly CreatePullRequestCommandInterface $createPullRequestCommand,
     ) {
         parent::__construct();
     }

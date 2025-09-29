@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\PullRequests;
 
+use Override;
 use App\Filament\Resources\PullRequests\Pages\ListPullRequests;
 use App\Filament\Resources\PullRequests\Pages\ViewPullRequest;
 use App\Filament\Resources\PullRequests\Schemas\PullRequestInfolist;
@@ -24,16 +25,19 @@ class PullRequestResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'title';
 
+    #[Override]
     public static function infolist(Schema $schema): Schema
     {
         return PullRequestInfolist::configure($schema);
     }
 
+    #[Override]
     public static function table(Table $table): Table
     {
         return PullRequestsTable::configure($table);
     }
 
+    #[Override]
     public static function getRelations(): array
     {
         return [

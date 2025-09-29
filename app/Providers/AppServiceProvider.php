@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Domains\PullRequests\Commands\Contracts\CreatePullRequestCommandInterface;
+use App\Domains\PullRequests\Commands\CreatePullRequestCommand;
+use App\Domains\PullRequests\Retrievers\Contracts\IssueRetrieverInterface;
+use App\Domains\PullRequests\Retrievers\Contracts\PullRequestRetrieverInterface;
+use App\Domains\PullRequests\Retrievers\IssueRetriever;
+use App\Domains\PullRequests\Retrievers\PullRequestRetriever;
 use Override;
 use App\Common\Contracts\GitHubRetrieverInterface;
 use App\Common\GitHubRetriever;
@@ -38,9 +44,18 @@ class AppServiceProvider extends ServiceProvider
 
     private function registerAppInterfaces(): void
     {
-        $this->app->bind(GitHubRetrieverInterface::class, GitHubRetriever::class);
-        $this->app->bind(GitHubIssueResponseToIssueDataMapperInterface::class, GitHubIssueResponseToIssueDataMapper::class);
-        $this->app->bind(GitHubPullRequestResponseToPullRequestDataMapperInterface::class, GitHubPullRequestResponseToPullRequestDataMapper::class);
+        $abstractsToConcrete = [
+            CreatePullRequestCommandInterface::class => CreatePullRequestCommand::class,
+            GitHubRetrieverInterface::class => GitHubRetriever::class,
+            GitHubIssueResponseToIssueDataMapperInterface::class => GitHubIssueResponseToIssueDataMapper::class,
+            GitHubPullRequestResponseToPullRequestDataMapperInterface::class => GitHubPullRequestResponseToPullRequestDataMapper::class,
+            IssueRetrieverInterface::class => IssueRetriever::class,
+            PullRequestRetrieverInterface::class => PullRequestRetriever::class,
+        ];
+
+        foreach ($abstractsToConcrete as $abstract => $concrete) {
+            $this->app->bind($abstract, $concrete);
+        }
     }
 
     private function registerTelescope(): void

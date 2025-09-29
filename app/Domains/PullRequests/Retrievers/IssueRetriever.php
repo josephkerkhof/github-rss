@@ -7,12 +7,13 @@ namespace App\Domains\PullRequests\Retrievers;
 use App\Common\Contracts\GitHubRetrieverInterface;
 use App\Domains\PullRequests\Enums\IssueFilter;
 use App\Domains\PullRequests\Mappers\Contracts\GitHubIssueResponseToIssueDataMapperInterface;
+use App\Domains\PullRequests\Retrievers\Contracts\IssueRetrieverInterface;
 use App\Domains\PullRequests\Schema\IssueData;
 use App\Models\Repository;
 use Illuminate\Support\Collection;
 use Log;
 
-final readonly class IssueRetriever
+final readonly class IssueRetriever implements IssueRetrieverInterface
 {
     public function __construct(
         private GitHubRetrieverInterface $retriever,
