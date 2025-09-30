@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Auth\EmailVerificationNotificationController::store
-* @see app/Http/Controllers/Auth/EmailVerificationNotificationController.php:14
+* @see app/Http/Controllers/Auth/EmailVerificationNotificationController.php:16
 * @route '/email/verification-notification'
 */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -16,7 +16,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\Auth\EmailVerificationNotificationController::store
-* @see app/Http/Controllers/Auth/EmailVerificationNotificationController.php:14
+* @see app/Http/Controllers/Auth/EmailVerificationNotificationController.php:16
 * @route '/email/verification-notification'
 */
 store.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ store.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Auth\EmailVerificationNotificationController::store
-* @see app/Http/Controllers/Auth/EmailVerificationNotificationController.php:14
+* @see app/Http/Controllers/Auth/EmailVerificationNotificationController.php:16
 * @route '/email/verification-notification'
 */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -35,7 +35,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
 /**
 * @see \App\Http\Controllers\Auth\EmailVerificationNotificationController::store
-* @see app/Http/Controllers/Auth/EmailVerificationNotificationController.php:14
+* @see app/Http/Controllers/Auth/EmailVerificationNotificationController.php:16
 * @route '/email/verification-notification'
 */
 const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -45,7 +45,7 @@ const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => 
 
 /**
 * @see \App\Http\Controllers\Auth\EmailVerificationNotificationController::store
-* @see app/Http/Controllers/Auth/EmailVerificationNotificationController.php:14
+* @see app/Http/Controllers/Auth/EmailVerificationNotificationController.php:16
 * @route '/email/verification-notification'
 */
 storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
