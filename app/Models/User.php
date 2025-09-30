@@ -5,18 +5,16 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Database\Factories\UserFactory;
-use Filament\Auth\MultiFactor\App\Contracts\HasAppAuthentication;
-use Filament\Models\Contracts\FilamentUser;
-use Filament\Panel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Fortify\TwoFactorAuthenticatable;
 
-class User extends Authenticatable implements FilamentUser, HasAppAuthentication, MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, TwoFactorAuthenticatable;
 
     /**
      * The attributes that are mass assignable.
@@ -52,34 +50,5 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
             'password' => 'hashed',
             'app_authentication_secret' => 'encrypted',
         ];
-    }
-
-    public function canAccessPanel(Panel $panel): bool
-    {
-        return true;
-    }
-
-    public function getAppAuthenticationSecret(): ?string
-    {
-        // This method should return the user's saved app authentication secret.
-
-        return $this->app_authentication_secret;
-    }
-
-    public function saveAppAuthenticationSecret(?string $secret): void
-    {
-        // This method should save the user's app authentication secret.
-
-        $this->app_authentication_secret = $secret;
-        $this->save();
-    }
-
-    public function getAppAuthenticationHolderName(): string
-    {
-        // In a user's authentication app, each account can be represented by a "holder name".
-        // If the user has multiple accounts in your app, it might be a good idea to use
-        // their email address as then they are still uniquely identifiable.
-
-        return $this->email;
     }
 }
