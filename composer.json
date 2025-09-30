@@ -1,5 +1,5 @@
 {
-    "$schema": "https://getcomposer.org/schema.json",
+    "schema": "https://getcomposer.org/schema.json",
     "name": "josephkerkhof/github-rss",
     "type": "project",
     "description": "A backend-focused application for ingesting GitHub data.",
