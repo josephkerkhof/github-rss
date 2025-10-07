@@ -32,6 +32,11 @@ class Repository extends Model
         'repo'
     ];
 
+    public function uniqueIds(): array
+    {
+        return ['uuid'];
+    }
+
     protected function slug(): Attribute
     {
         return Attribute::make(
