@@ -1,0 +1,15 @@
+meta {
+  name: List Repositories
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{url}}/repositories
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}
