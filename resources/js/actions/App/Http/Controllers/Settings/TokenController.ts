@@ -1,75 +1,75 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../../../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../../wayfinder'
 /**
-* @see \App\Http\Controllers\Settings\TokenController::index
-* @see app/Http/Controllers/Settings/TokenController.php:10
+* @see \App\Http\Controllers\Settings\TokenController::edit
+* @see app/Http/Controllers/Settings/TokenController.php:14
 * @route '/settings/tokens'
 */
-export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: index.url(options),
+export const edit = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: edit.url(options),
     method: 'get',
 })
 
-index.definition = {
+edit.definition = {
     methods: ["get","head"],
     url: '/settings/tokens',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
-* @see \App\Http\Controllers\Settings\TokenController::index
-* @see app/Http/Controllers/Settings/TokenController.php:10
+* @see \App\Http\Controllers\Settings\TokenController::edit
+* @see app/Http/Controllers/Settings/TokenController.php:14
 * @route '/settings/tokens'
 */
-index.url = (options?: RouteQueryOptions) => {
-    return index.definition.url + queryParams(options)
+edit.url = (options?: RouteQueryOptions) => {
+    return edit.definition.url + queryParams(options)
 }
 
 /**
-* @see \App\Http\Controllers\Settings\TokenController::index
-* @see app/Http/Controllers/Settings/TokenController.php:10
+* @see \App\Http\Controllers\Settings\TokenController::edit
+* @see app/Http/Controllers/Settings/TokenController.php:14
 * @route '/settings/tokens'
 */
-index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: index.url(options),
+edit.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: edit.url(options),
     method: 'get',
 })
 
 /**
-* @see \App\Http\Controllers\Settings\TokenController::index
-* @see app/Http/Controllers/Settings/TokenController.php:10
+* @see \App\Http\Controllers\Settings\TokenController::edit
+* @see app/Http/Controllers/Settings/TokenController.php:14
 * @route '/settings/tokens'
 */
-index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
-    url: index.url(options),
+edit.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: edit.url(options),
     method: 'head',
 })
 
 /**
-* @see \App\Http\Controllers\Settings\TokenController::index
-* @see app/Http/Controllers/Settings/TokenController.php:10
+* @see \App\Http\Controllers\Settings\TokenController::edit
+* @see app/Http/Controllers/Settings/TokenController.php:14
 * @route '/settings/tokens'
 */
-const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: index.url(options),
+const editForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: edit.url(options),
     method: 'get',
 })
 
 /**
-* @see \App\Http\Controllers\Settings\TokenController::index
-* @see app/Http/Controllers/Settings/TokenController.php:10
+* @see \App\Http\Controllers\Settings\TokenController::edit
+* @see app/Http/Controllers/Settings/TokenController.php:14
 * @route '/settings/tokens'
 */
-indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: index.url(options),
+editForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: edit.url(options),
     method: 'get',
 })
 
 /**
-* @see \App\Http\Controllers\Settings\TokenController::index
-* @see app/Http/Controllers/Settings/TokenController.php:10
+* @see \App\Http\Controllers\Settings\TokenController::edit
+* @see app/Http/Controllers/Settings/TokenController.php:14
 * @route '/settings/tokens'
 */
-indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: index.url({
+editForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: edit.url({
         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
             _method: 'HEAD',
             ...(options?.query ?? options?.mergeQuery ?? {}),
@@ -78,8 +78,148 @@ indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     method: 'get',
 })
 
-index.form = indexForm
+edit.form = editForm
 
-const TokenController = { index }
+/**
+* @see \App\Http\Controllers\Settings\TokenController::store
+* @see app/Http/Controllers/Settings/TokenController.php:27
+* @route '/settings/tokens'
+*/
+export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: store.url(options),
+    method: 'post',
+})
+
+store.definition = {
+    methods: ["post"],
+    url: '/settings/tokens',
+} satisfies RouteDefinition<["post"]>
+
+/**
+* @see \App\Http\Controllers\Settings\TokenController::store
+* @see app/Http/Controllers/Settings/TokenController.php:27
+* @route '/settings/tokens'
+*/
+store.url = (options?: RouteQueryOptions) => {
+    return store.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\Settings\TokenController::store
+* @see app/Http/Controllers/Settings/TokenController.php:27
+* @route '/settings/tokens'
+*/
+store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: store.url(options),
+    method: 'post',
+})
+
+/**
+* @see \App\Http\Controllers\Settings\TokenController::store
+* @see app/Http/Controllers/Settings/TokenController.php:27
+* @route '/settings/tokens'
+*/
+const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: store.url(options),
+    method: 'post',
+})
+
+/**
+* @see \App\Http\Controllers\Settings\TokenController::store
+* @see app/Http/Controllers/Settings/TokenController.php:27
+* @route '/settings/tokens'
+*/
+storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: store.url(options),
+    method: 'post',
+})
+
+store.form = storeForm
+
+/**
+* @see \App\Http\Controllers\Settings\TokenController::destroy
+* @see app/Http/Controllers/Settings/TokenController.php:38
+* @route '/settings/tokens/{tokenId}'
+*/
+export const destroy = (args: { tokenId: string | number } | [tokenId: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+    url: destroy.url(args, options),
+    method: 'delete',
+})
+
+destroy.definition = {
+    methods: ["delete"],
+    url: '/settings/tokens/{tokenId}',
+} satisfies RouteDefinition<["delete"]>
+
+/**
+* @see \App\Http\Controllers\Settings\TokenController::destroy
+* @see app/Http/Controllers/Settings/TokenController.php:38
+* @route '/settings/tokens/{tokenId}'
+*/
+destroy.url = (args: { tokenId: string | number } | [tokenId: string | number ] | string | number, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { tokenId: args }
+    }
+
+    if (Array.isArray(args)) {
+        args = {
+            tokenId: args[0],
+        }
+    }
+
+    args = applyUrlDefaults(args)
+
+    const parsedArgs = {
+        tokenId: args.tokenId,
+    }
+
+    return destroy.definition.url
+            .replace('{tokenId}', parsedArgs.tokenId.toString())
+            .replace(/\/+$/, '') + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\Settings\TokenController::destroy
+* @see app/Http/Controllers/Settings/TokenController.php:38
+* @route '/settings/tokens/{tokenId}'
+*/
+destroy.delete = (args: { tokenId: string | number } | [tokenId: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+    url: destroy.url(args, options),
+    method: 'delete',
+})
+
+/**
+* @see \App\Http\Controllers\Settings\TokenController::destroy
+* @see app/Http/Controllers/Settings/TokenController.php:38
+* @route '/settings/tokens/{tokenId}'
+*/
+const destroyForm = (args: { tokenId: string | number } | [tokenId: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: destroy.url(args, {
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'DELETE',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'post',
+})
+
+/**
+* @see \App\Http\Controllers\Settings\TokenController::destroy
+* @see app/Http/Controllers/Settings/TokenController.php:38
+* @route '/settings/tokens/{tokenId}'
+*/
+destroyForm.delete = (args: { tokenId: string | number } | [tokenId: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: destroy.url(args, {
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'DELETE',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'post',
+})
+
+destroy.form = destroyForm
+
+const TokenController = { edit, store, destroy }
 
 export default TokenController
