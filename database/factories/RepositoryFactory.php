@@ -2,11 +2,12 @@
 
 namespace Database\Factories;
 
+use App\Models\Repository;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Repository>
+ * @extends Factory<Repository>
  */
 class RepositoryFactory extends Factory
 {
@@ -18,6 +19,7 @@ class RepositoryFactory extends Factory
     public function definition(): array
     {
         return [
+            'uuid' => fake()->uuid(),
             'user_id' => User::factory(),
             'name' => fake()->name(),
             'owner' => fake()->word(),
