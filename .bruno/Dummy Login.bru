@@ -1,0 +1,19 @@
+meta {
+  name: Dummy Login
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{url}}/dummy-login
+  body: none
+  auth: none
+}
+
+script:post-response {
+  bru.setEnvVar("bearer_token", res.body.token);
+}
+
+settings {
+  encodeUrl: true
+}
