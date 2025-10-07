@@ -10,6 +10,9 @@ use App\Domains\PullRequests\Retrievers\Contracts\IssueRetrieverInterface;
 use App\Domains\PullRequests\Retrievers\Contracts\PullRequestRetrieverInterface;
 use App\Domains\PullRequests\Retrievers\IssueRetriever;
 use App\Domains\PullRequests\Retrievers\PullRequestRetriever;
+use App\Models\Repository;
+use App\Policies\RepositoryPolicy;
+use Gate;
 use Override;
 use App\Common\Contracts\GitHubRetrieverInterface;
 use App\Common\GitHubRetriever;
@@ -48,6 +51,8 @@ class AppServiceProvider extends ServiceProvider
     {
         // Use Carbon Immutable for timestamps
         Date::use(CarbonImmutable::class);
+
+        $this->registerPolicies();
     }
 
     private function registerTelescope(): void
@@ -56,5 +61,10 @@ class AppServiceProvider extends ServiceProvider
             $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
             $this->app->register(TelescopeServiceProvider::class);
         }
+    }
+
+    private function registerPolicies(): void
+    {
+        Gate::policy(Repository::class, RepositoryPolicy::class);
     }
 }
