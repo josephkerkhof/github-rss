@@ -18,6 +18,7 @@ class BranchFactory extends Factory
     public function definition(): array
     {
         return [
+            'uuid' => fake()->uuid(),
             'repository_id' => Repository::factory(),
             'name' => fake()->name(),
         ];

@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Domains\Repositories\Http\Controllers\BranchController;
 use App\Domains\Repositories\Http\Controllers\RepositoryController;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -15,6 +16,12 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::controller(RepositoryController::class)->group(function (): void {
         Route::get('/repositories', 'index');
     });
+
+    Route::controller(BranchController::class)
+        ->prefix('{repository:uuid}')
+        ->group(function (): void {
+            Route::get('/branches', 'index');
+        });
 });
 
 

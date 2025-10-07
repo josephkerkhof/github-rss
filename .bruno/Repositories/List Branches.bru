@@ -1,0 +1,19 @@
+meta {
+  name: List Branches
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{url}}/:repositoryUuid/branches
+  body: none
+  auth: inherit
+}
+
+params:path {
+  repositoryUuid: 712185e5-615f-45d2-a5d9-6aeb3b10a9df
+}
+
+settings {
+  encodeUrl: true
+}
