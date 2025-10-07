@@ -7,6 +7,7 @@ namespace App\Models;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -51,5 +52,10 @@ class User extends Authenticatable implements MustVerifyEmail
             'password' => 'hashed',
             'app_authentication_secret' => 'encrypted',
         ];
+    }
+
+    public function repositories(): HasMany
+    {
+        return $this->hasMany(Repository::class);
     }
 }
