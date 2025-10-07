@@ -7,6 +7,7 @@ namespace App\Models;
 use Database\Factories\RepositoryFactory;
 use Iksaku\Laravel\MassUpdate\MassUpdatable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -23,6 +24,7 @@ class Repository extends Model
     /** @use HasFactory<RepositoryFactory> */
     use HasFactory;
     use MassUpdatable;
+    use HasUuids;
 
     protected $fillable = [
         'name',
