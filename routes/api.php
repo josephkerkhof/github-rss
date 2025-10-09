@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Domains\Repositories\Http\Controllers\BranchController;
+use App\Domains\Repositories\Http\Controllers\PullRequestController;
 use App\Domains\Repositories\Http\Controllers\RepositoryController;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -21,6 +22,12 @@ Route::middleware('auth:sanctum')->group(function (): void {
         ->prefix('{repository:uuid}')
         ->group(function (): void {
             Route::get('/branches', 'index');
+        });
+
+    Route::controller(PullRequestController::class)
+        ->prefix('{repository:uuid}')
+        ->group(function (): void {
+            Route::get('/pull-requests', 'index');
         });
 });
 

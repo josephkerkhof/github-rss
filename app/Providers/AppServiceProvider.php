@@ -10,6 +10,8 @@ use App\Domains\PullRequests\Retrievers\Contracts\IssueRetrieverInterface;
 use App\Domains\PullRequests\Retrievers\Contracts\PullRequestRetrieverInterface;
 use App\Domains\PullRequests\Retrievers\IssueRetriever;
 use App\Domains\PullRequests\Retrievers\PullRequestRetriever;
+use App\Domains\Repositories\Mappers\Concerns\PullRequestToResponseMapperInterface;
+use App\Domains\Repositories\Mappers\PullRequestToResponseMapper;
 use App\Models\Repository;
 use App\Policies\RepositoryPolicy;
 use Gate;
@@ -33,6 +35,7 @@ class AppServiceProvider extends ServiceProvider
         GitHubPullRequestResponseToPullRequestDataMapperInterface::class => GitHubPullRequestResponseToPullRequestDataMapper::class,
         IssueRetrieverInterface::class => IssueRetriever::class,
         PullRequestRetrieverInterface::class => PullRequestRetriever::class,
+        PullRequestToResponseMapperInterface::class => PullRequestToResponseMapper::class,
     ];
 
     /**

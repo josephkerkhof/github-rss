@@ -1,0 +1,23 @@
+meta {
+  name: List Pull Requests
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{url}}/:repositoryUuid/pull-requests
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~page: 2
+}
+
+params:path {
+  repositoryUuid: 712185e5-615f-45d2-a5d9-6aeb3b10a9df
+}
+
+settings {
+  encodeUrl: true
+}
