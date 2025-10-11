@@ -5,12 +5,13 @@ declare(strict_types=1);
 use App\Domains\Repositories\Http\Controllers\BranchController;
 use App\Domains\Repositories\Http\Controllers\PullRequestController;
 use App\Domains\Repositories\Http\Controllers\RepositoryController;
+use App\Domains\Repositories\Http\Controllers\SearchPullRequestController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->group(function (): void {
-    Route::get('/user', function (Request $request) {
+    Route::get('/user', static function (Request $request) {
         return $request->user();
     });
 
@@ -29,6 +30,8 @@ Route::middleware('auth:sanctum')->group(function (): void {
         ->group(function (): void {
             Route::get('/pull-requests', 'index');
         });
+
+    Route::post('{repository:uuid}/list', SearchPullRequestController::class);
 });
 
 

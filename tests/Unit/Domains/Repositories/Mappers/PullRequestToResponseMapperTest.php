@@ -44,6 +44,7 @@ final class PullRequestToResponseMapperTest extends TestCase
         ]);
 
         $pullRequest = PullRequest::factory()->make([
+            'id' => 12,
             'title' => 'Test Pull Request',
             'body' => 'This is a test PR',
             'number' => 42,
@@ -58,6 +59,7 @@ final class PullRequestToResponseMapperTest extends TestCase
 
         // Then
         self::assertInstanceOf(PullRequestData::class, $result);
+        self::assertSame(12, $result->id);
         self::assertSame('Test Pull Request', $result->title);
         self::assertSame('This is a test PR', $result->body);
         self::assertSame(42, $result->number);
@@ -77,6 +79,7 @@ final class PullRequestToResponseMapperTest extends TestCase
         $branch = Branch::factory()->make();
 
         $pullRequest = PullRequest::factory()->make([
+            'id' => 100,
             'title' => 'PR Without Body',
             'body' => null,
             'number' => 100,

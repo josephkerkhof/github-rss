@@ -1,0 +1,33 @@
+meta {
+  name: Search Pull Requests
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{url}}/:repositoryUuid/list
+  body: json
+  auth: inherit
+}
+
+params:path {
+  repositoryUuid: 712185e5-615f-45d2-a5d9-6aeb3b10a9df
+}
+
+body:json {
+  {
+    "github_usernames": [
+      "calebdw",
+      "timacdonald",
+      "cosmastech"
+    ],
+    "branch_uuids": [],
+    "numbers": [],
+    "cursor": "",
+    "per_page": 5
+  }
+}
+
+settings {
+  encodeUrl: true
+}

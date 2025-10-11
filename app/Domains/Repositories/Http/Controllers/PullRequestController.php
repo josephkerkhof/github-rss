@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domains\Repositories\Http\Controllers;
 
 use App\Domains\Repositories\Mappers\Concerns\PullRequestToResponseMapperInterface;
@@ -28,7 +30,7 @@ final class PullRequestController extends Controller
                 'branch',
             ])
             ->latest('id')
-            ->paginate(20)
-            ->through($this->mapper->map(...));
+            ->paginate(10)
+            ->through($this->mapper->map(...)); // @phpstan-ignore-line
     }
 }
