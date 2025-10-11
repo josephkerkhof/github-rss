@@ -26,7 +26,6 @@ final class PullRequestController extends Controller
             ->with([
                 'author',
                 'branch',
-                'repository', // todo how to avoid duplicate query?
             ])
             ->latest('id')
             ->paginate(20)
