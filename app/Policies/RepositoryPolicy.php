@@ -16,4 +16,19 @@ final class RepositoryPolicy
     {
         return $user->id === $repository->user_id;
     }
+
+    public function create(User $user): bool
+    {
+        return true;
+    }
+
+    public function update(User $user, Repository $repository): bool
+    {
+        return $user->id === $repository->user_id;
+    }
+
+    public function delete(User $user, Repository $repository): bool
+    {
+        return $user->id === $repository->user_id;
+    }
 }

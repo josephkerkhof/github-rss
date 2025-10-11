@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../../../wayfinder'
 /**
 * @see \App\Domains\Repositories\Http\Controllers\PullRequestController::index
-* @see app/Domains/Repositories/Http/Controllers/PullRequestController.php:21
+* @see app/Domains/Repositories/Http/Controllers/PullRequestController.php:23
 * @route '/api/{repository}/pull-requests'
 */
 export const index = (args: { repository: string | number | { uuid: string | number } } | [repository: string | number | { uuid: string | number } ] | string | number | { uuid: string | number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ index.definition = {
 
 /**
 * @see \App\Domains\Repositories\Http\Controllers\PullRequestController::index
-* @see app/Domains/Repositories/Http/Controllers/PullRequestController.php:21
+* @see app/Domains/Repositories/Http/Controllers/PullRequestController.php:23
 * @route '/api/{repository}/pull-requests'
 */
 index.url = (args: { repository: string | number | { uuid: string | number } } | [repository: string | number | { uuid: string | number } ] | string | number | { uuid: string | number }, options?: RouteQueryOptions) => {
@@ -49,7 +49,7 @@ index.url = (args: { repository: string | number | { uuid: string | number } } |
 
 /**
 * @see \App\Domains\Repositories\Http\Controllers\PullRequestController::index
-* @see app/Domains/Repositories/Http/Controllers/PullRequestController.php:21
+* @see app/Domains/Repositories/Http/Controllers/PullRequestController.php:23
 * @route '/api/{repository}/pull-requests'
 */
 index.get = (args: { repository: string | number | { uuid: string | number } } | [repository: string | number | { uuid: string | number } ] | string | number | { uuid: string | number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -59,7 +59,7 @@ index.get = (args: { repository: string | number | { uuid: string | number } } |
 
 /**
 * @see \App\Domains\Repositories\Http\Controllers\PullRequestController::index
-* @see app/Domains/Repositories/Http/Controllers/PullRequestController.php:21
+* @see app/Domains/Repositories/Http/Controllers/PullRequestController.php:23
 * @route '/api/{repository}/pull-requests'
 */
 index.head = (args: { repository: string | number | { uuid: string | number } } | [repository: string | number | { uuid: string | number } ] | string | number | { uuid: string | number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -69,7 +69,7 @@ index.head = (args: { repository: string | number | { uuid: string | number } } 
 
 /**
 * @see \App\Domains\Repositories\Http\Controllers\PullRequestController::index
-* @see app/Domains/Repositories/Http/Controllers/PullRequestController.php:21
+* @see app/Domains/Repositories/Http/Controllers/PullRequestController.php:23
 * @route '/api/{repository}/pull-requests'
 */
 const indexForm = (args: { repository: string | number | { uuid: string | number } } | [repository: string | number | { uuid: string | number } ] | string | number | { uuid: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -79,7 +79,7 @@ const indexForm = (args: { repository: string | number | { uuid: string | number
 
 /**
 * @see \App\Domains\Repositories\Http\Controllers\PullRequestController::index
-* @see app/Domains/Repositories/Http/Controllers/PullRequestController.php:21
+* @see app/Domains/Repositories/Http/Controllers/PullRequestController.php:23
 * @route '/api/{repository}/pull-requests'
 */
 indexForm.get = (args: { repository: string | number | { uuid: string | number } } | [repository: string | number | { uuid: string | number } ] | string | number | { uuid: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -89,7 +89,7 @@ indexForm.get = (args: { repository: string | number | { uuid: string | number }
 
 /**
 * @see \App\Domains\Repositories\Http\Controllers\PullRequestController::index
-* @see app/Domains/Repositories/Http/Controllers/PullRequestController.php:21
+* @see app/Domains/Repositories/Http/Controllers/PullRequestController.php:23
 * @route '/api/{repository}/pull-requests'
 */
 indexForm.head = (args: { repository: string | number | { uuid: string | number } } | [repository: string | number | { uuid: string | number } ] | string | number | { uuid: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
