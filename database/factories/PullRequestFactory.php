@@ -23,7 +23,7 @@ class PullRequestFactory extends Factory
             'repository_id' => Repository::factory(),
             'branch_id' => Branch::factory(),
             'author_id' => Author::factory(),
-            'number' => fake()->numberBetween(25_000, 100_000),
+            'number' => fake()->unique()->numberBetween(25_000, 100_000),
             'title' => fake()->title(),
             'body' => fake()->text(),
             'url' => fake()->url(),
