@@ -43,7 +43,6 @@ class SearchPullRequestControllerTest extends TestCase
         self::assertEqualsCanonicalizing(
             [
                 [
-                    'id' => $pr1->id,
                     'title' => $pr1->title,
                     'body' => $pr1->body,
                     'number' => $pr1->number,
@@ -54,7 +53,6 @@ class SearchPullRequestControllerTest extends TestCase
                     'merged_at' => $pr1->merged_at->toIso8601String(),
                 ],
                 [
-                    'id' => $pr2->id,
                     'title' => $pr2->title,
                     'body' => $pr2->body,
                     'number' => $pr2->number,
@@ -96,8 +94,8 @@ class SearchPullRequestControllerTest extends TestCase
             ->assertJsonCount(2, 'data');
 
         self::assertEqualsCanonicalizing(
-            [$pr1->id, $pr2->id],
-            array_column($response->json('data'), 'id')
+            [$pr1->number, $pr2->number],
+            array_column($response->json('data'), 'number')
         );
     }
 
@@ -129,8 +127,8 @@ class SearchPullRequestControllerTest extends TestCase
             ->assertJsonCount(2, 'data');
 
         self::assertEqualsCanonicalizing(
-            [$pr1->id, $pr2->id],
-            array_column($response->json('data'), 'id')
+            [$pr1->number, $pr2->number],
+            array_column($response->json('data'), 'number')
         );
     }
 
@@ -304,6 +302,6 @@ class SearchPullRequestControllerTest extends TestCase
         $response->assertOk()
             ->assertJsonCount(1, 'data');
 
-        self::assertEquals($matchingPr->id, $response->json('data.0.id'));
+        self::assertEquals($matchingPr->number, $response->json('data.0.number'));
     }
 }
