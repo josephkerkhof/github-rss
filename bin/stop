@@ -45,9 +45,9 @@ print_info "Stopping Laravel Docker environment..."
 
 if [ "$REMOVE_VOLUMES" = true ]; then
     print_info "Removing containers and volumes..."
-    docker-compose down -v
+    docker-compose down -v --remove-orphans
     print_success "Containers and volumes removed"
 else
-    docker-compose down
+    docker-compose down --remove-orphans
     print_success "Containers stopped"
 fi
