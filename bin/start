@@ -60,14 +60,14 @@ echo ""
 
 # Step 1: Build and start containers
 print_info "Building and starting Docker containers..."
-docker-compose down 2>/dev/null || true
-docker-compose up -d --build
+docker compose down 2>/dev/null || true
+docker compose up -d --build
 
 # Wait for Postgres to be ready
 print_info "Waiting for Postgres to be ready..."
 MAX_TRIES=30
 TRIES=0
-while ! docker-compose exec -T postgres pg_isready --quiet 2>/dev/null; do
+while ! docker compose exec -T postgres pg_isready --quiet 2>/dev/null; do
     TRIES=$((TRIES + 1))
     if [ $TRIES -gt $MAX_TRIES ]; then
         print_error "Postgres failed to start after $MAX_TRIES attempts"
@@ -87,7 +87,7 @@ if [ ! -f .env ]; then
         print_success ".env file created"
 
         print_info "Generating application key..."
-        docker-compose exec -T app php artisan key:generate --ansi
+        docker compose exec -T app php artisan key:generate --ansi
         print_success "Application key generated"
 
     else
@@ -100,31 +100,31 @@ fi
 
 # Step 3: Install composer dependencies
 print_info "Installing composer dependencies..."
-docker-compose exec -T app composer install --no-interaction --prefer-dist --optimize-autoloader
+docker compose exec -T app composer install --no-interaction --prefer-dist --optimize-autoloader
 print_success "Composer dependencies installed"
 
 # Step 4: Run migrations
 print_info "Running database migrations..."
-docker-compose exec -T app php artisan migrate --force --ansi
+docker compose exec -T app php artisan migrate --force --ansi
 print_success "Database migrations completed"
 
 # Step 5: Optionally seed the database
 if [ "$SEED_DATABASE" = true ]; then
     print_info "Seeding the database..."
-    docker-compose exec -T app php artisan migrate:fresh --seeder=DatabaseSeeder --force --ansi
+    docker compose exec -T app php artisan migrate:fresh --seeder=DatabaseSeeder --force --ansi
     print_success "Database seeding completed"
 fi
 
 # Step 6: Clear caches
 print_info "Clearing caches..."
-docker-compose exec -T app php artisan config:clear
-docker-compose exec -T app php artisan cache:clear
-docker-compose exec -T app php artisan view:clear
+docker compose exec -T app php artisan config:clear
+docker compose exec -T app php artisan cache:clear
+docker compose exec -T app php artisan view:clear
 print_success "Caches cleared"
 
 # Step 7: Set permissions
 print_info "Setting permissions..."
-docker-compose exec -T app chmod -R 775 storage bootstrap/cache 2>/dev/null || true
+docker compose exec -T app chmod -R 775 storage bootstrap/cache 2>/dev/null || true
 print_success "Permissions set"
 
 echo ""
@@ -133,10 +133,10 @@ echo ""
 echo "🚀 Your application is running at: http://localhost:8000"
 echo ""
 echo "Useful commands:"
-echo "  docker-compose exec app bash     - Enter the app container"
-echo "  docker-compose exec app php artisan tinker - Run tinker"
-echo "  docker-compose logs -f           - View all logs"
-echo "  docker-compose down              - Stop all containers"
+echo "  docker compose exec app bash     - Enter the app container"
+echo "  docker compose exec app php artisan tinker - Run tinker"
+echo "  docker compose logs -f           - View all logs"
+echo "  docker compose down              - Stop all containers"
 echo ""
 
 # Check if we can actually connect to the app
@@ -144,5 +144,5 @@ if curl -s -o /dev/null -w "%{http_code}" http://localhost:8000 | grep -q "200\|
     print_success "Application is responding at http://localhost:8000"
 else
     print_error "Warning: Application may not be responding correctly"
-    echo "Check the logs with: docker-compose logs webserver"
+    echo "Check the logs with: docker compose logs webserver"
 fi
