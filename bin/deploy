@@ -2,8 +2,6 @@
 
 set -e
 
-git pull origin master
-
 docker-compose exec -T app composer install --no-interaction --no-dev --optimize-autoloader --no-scripts
 
 docker run --rm -v "$(pwd)":/app -w /app node:22-alpine sh -c "npm ci && npm run build"

@@ -6,6 +6,10 @@ jobs:
   deploy:
     runs-on: self-hosted
     steps:
+      - name: Pull latest code
+        working-directory: ${{ vars.DEPLOY_PATH }}
+        run: git pull origin master
+
       - name: Deploy
         working-directory: ${{ vars.DEPLOY_PATH }}
         run: bin/deploy
