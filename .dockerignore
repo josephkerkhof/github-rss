@@ -1,0 +1,4 @@
+bootstrapl/cache/*
+!bootstrap/cache/.gitignore
+node_modules
+.git
