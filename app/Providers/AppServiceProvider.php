@@ -4,8 +4,14 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Common\Contracts\GitHubRetrieverInterface;
+use App\Common\GitHubRetriever;
 use App\Domains\PullRequests\Commands\Contracts\CreatePullRequestCommandInterface;
 use App\Domains\PullRequests\Commands\CreatePullRequestCommand;
+use App\Domains\PullRequests\Mappers\Contracts\GitHubIssueResponseToIssueDataMapperInterface;
+use App\Domains\PullRequests\Mappers\Contracts\GitHubPullRequestResponseToPullRequestDataMapperInterface;
+use App\Domains\PullRequests\Mappers\GitHubIssueResponseToIssueDataMapper;
+use App\Domains\PullRequests\Mappers\GitHubPullRequestResponseToPullRequestDataMapper;
 use App\Domains\PullRequests\Retrievers\Contracts\IssueRetrieverInterface;
 use App\Domains\PullRequests\Retrievers\Contracts\PullRequestRetrieverInterface;
 use App\Domains\PullRequests\Retrievers\IssueRetriever;
@@ -14,17 +20,11 @@ use App\Domains\Repositories\Mappers\Concerns\PullRequestToResponseMapperInterfa
 use App\Domains\Repositories\Mappers\PullRequestToResponseMapper;
 use App\Models\Repository;
 use App\Policies\RepositoryPolicy;
-use Gate;
-use Override;
-use App\Common\Contracts\GitHubRetrieverInterface;
-use App\Common\GitHubRetriever;
-use App\Domains\PullRequests\Mappers\Contracts\GitHubIssueResponseToIssueDataMapperInterface;
-use App\Domains\PullRequests\Mappers\Contracts\GitHubPullRequestResponseToPullRequestDataMapperInterface;
-use App\Domains\PullRequests\Mappers\GitHubIssueResponseToIssueDataMapper;
-use App\Domains\PullRequests\Mappers\GitHubPullRequestResponseToPullRequestDataMapper;
 use Carbon\CarbonImmutable;
 use Date;
+use Gate;
 use Illuminate\Support\ServiceProvider;
+use Override;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -45,6 +45,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->registerTelescope();
+        $this->registerScramble();
     }
 
     /**
@@ -56,6 +57,13 @@ class AppServiceProvider extends ServiceProvider
         Date::use(CarbonImmutable::class);
 
         $this->registerPolicies();
+    }
+
+    private function registerScramble(): void
+    {
+        if ($this->app->environment('local') && class_exists(\Dedoc\Scramble\ScrambleServiceProvider::class)) {
+            $this->app->register(\Dedoc\Scramble\ScrambleServiceProvider::class);
+        }
     }
 
     private function registerTelescope(): void

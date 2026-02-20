@@ -80,6 +80,7 @@
     "extra": {
         "laravel": {
             "dont-discover": [
+                "dedoc/scramble",
                 "laravel/telescope"
             ]
         }
