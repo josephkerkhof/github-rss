@@ -53,6 +53,11 @@ COPY docker/php/xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 # Install PCOV for code coverage
 RUN pecl install pcov && docker-php-ext-enable pcov
 
+# Install Node.js 22
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
+    && apt-get install -y nodejs \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
 # Install composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
