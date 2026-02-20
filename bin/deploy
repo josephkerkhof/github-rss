@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -e
+
+git pull origin master
+
+docker-compose exec -T app composer install --no-interaction --no-dev --optimize-autoloader
+
+docker run --rm -v "$(pwd)":/app -w /app node:22-alpine sh -c "npm ci && npm run build"
+
+docker-compose exec -T app php artisan migrate --force
+
+docker-compose exec -T app php artisan optimize
+
+docker-compose restart queue scheduler

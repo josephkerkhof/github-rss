@@ -15,7 +15,7 @@ services:
         networks:
             - laravel
         depends_on:
-            - mysql
+            - postgres
             - redis
 
     webserver:
@@ -33,22 +33,18 @@ services:
         depends_on:
             - app
 
-    mysql:
-        image: mysql:8.0
-        container_name: laravel-mysql
+    postgres:
+        image: postgres:17-alpine
+        container_name: laravel-postgres
         restart: unless-stopped
         ports:
-            - "3306:3306"
+            - "5432:5432"
         environment:
-            MYSQL_DATABASE: ${DB_DATABASE:-laravel}
-            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-secret}
-            MYSQL_PASSWORD: ${DB_PASSWORD:-secret}
-            MYSQL_USER: ${DB_USERNAME:-laravel}
-            SERVICE_TAGS: dev
-            SERVICE_NAME: mysql
+            POSTGRES_DB: ${DB_DATABASE:-laravel}
+            POSTGRES_USER: ${DB_USERNAME:-laravel}
+            POSTGRES_PASSWORD: ${DB_PASSWORD:-secret}
         volumes:
-            - mysql-data:/var/lib/mysql
-            - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
+            - postgres-data:/var/lib/postgresql/data
         networks:
             - laravel
 
@@ -80,7 +76,7 @@ services:
             - laravel
         depends_on:
             - app
-            - mysql
+            - postgres
             - redis
 
     scheduler:
@@ -99,7 +95,7 @@ services:
             - laravel
         depends_on:
             - app
-            - mysql
+            - postgres
             - redis
 
 networks:
@@ -107,7 +103,7 @@ networks:
         driver: bridge
 
 volumes:
-    mysql-data:
+    postgres-data:
         driver: local
     redis-data:
         driver: local

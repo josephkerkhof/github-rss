@@ -1,0 +1,11 @@
+on:
+  push:
+    branches: [master]
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Deploy
+        working-directory: ${{ vars.DEPLOY_PATH }}
+        run: bin/deploy

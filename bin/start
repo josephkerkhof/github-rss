@@ -63,21 +63,21 @@ print_info "Building and starting Docker containers..."
 docker-compose down 2>/dev/null || true
 docker-compose up -d --build
 
-# Wait for MySQL to be ready
-print_info "Waiting for MySQL to be ready..."
+# Wait for Postgres to be ready
+print_info "Waiting for Postgres to be ready..."
 MAX_TRIES=30
 TRIES=0
-while ! docker-compose exec -T mysql mysqladmin ping -h localhost --silent 2>/dev/null; do
+while ! docker-compose exec -T postgres pg_isready --quiet 2>/dev/null; do
     TRIES=$((TRIES + 1))
     if [ $TRIES -gt $MAX_TRIES ]; then
-        print_error "MySQL failed to start after $MAX_TRIES attempts"
+        print_error "Postgres failed to start after $MAX_TRIES attempts"
         exit 1
     fi
     echo -n "."
     sleep 2
 done
 echo ""
-print_success "MySQL is ready"
+print_success "Postgres is ready"
 
 # Step 2: Copy .env.example if .env doesn't exist and generate the application key
 if [ ! -f .env ]; then
