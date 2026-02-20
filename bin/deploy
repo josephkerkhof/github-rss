@@ -6,6 +6,7 @@ docker compose build app
 docker compose up -d --no-deps app queue scheduler
 
 docker compose exec -T app composer install --no-interaction --no-dev --optimize-autoloader --no-scripts
+docker compose exec -T app php artisan package:discover --ansi
 
 docker compose exec -T app npm ci
 docker compose exec -T app npm run build
