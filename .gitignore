@@ -1,5 +1,7 @@
 *.log
 .DS_Store
+.devenv*
+.direnv/
 .env
 .env.backup
 .env.production
@@ -19,6 +21,7 @@
 /storage/*.key
 /storage/pail
 /vendor
+devenv.local.nix
 Homestead.json
 Homestead.yaml
 Thumbs.db

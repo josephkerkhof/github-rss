@@ -7,10 +7,11 @@ While the core functionality could be implemented simply, this project intention
 ## Architecture & Engineering Goals
 
 ### ✅ Comprehensive Testing Strategy
+
 - **Test Pyramid Implementation**: Emphasizing integration tests over unit tests for better confidence in system behavior
 - **High Coverage**: All critical paths covered with meaningful tests
 
-##  🧪 Test Method Naming Convention
+## 🧪 Test Method Naming Convention
 
 This project employs a Given-When-Then approach to test method naming in PHPUnit, making test intentions immediately clear:
 
@@ -30,12 +31,14 @@ This naming convention provides several benefits:
 - **Better failure reporting**: Failed test names immediately communicate what business scenario broke
 
 ### 🔄 CQRS Pattern Implementation
+
 - **Command Query Responsibility Segregation**: Clean separation between read and write operations
 - **Scalable Architecture**: Designed for maintainability and future extension
 
-### 🐳 Containerized Deployment
-- **Docker Integration**: Streamlined local development and deployment
-- **Environment Consistency**: Eliminates "works on my machine" issues
+### Reproducible Development Environment
+
+- **Devenv Integration**: PHP, Node.js, PostgreSQL, and Redis are pinned and managed with Nix
+- **Environment Consistency**: The complete local stack starts with one command without Docker
 
 ## Roadmap
 
@@ -50,32 +53,38 @@ This project serves as a foundation for demonstrating additional enterprise patt
 ### Initial Setup
 
 ```bash
-# Starting and stopping the environment
-bin/start          # Basic setup
-bin/start --seed   # Setup with database seeding (this will wipe out the existing database content)
-bin/stop           # Stop containers
+# Enter the development shell. Dependencies and the application key are set up automatically.
+devenv shell
+
+# Start PostgreSQL, Redis, Laravel, the queue worker, scheduler, logs, and Vite.
+devenv up
 ```
+
+The application is available at `http://localhost:8000`. PostgreSQL and Redis data are persisted under `.devenv/state`.
 
 ### Daily Development
 
 ```bash
-bin/aritsan <...>           # Run Artisan commands
-DEBUG=1 bin/aritsan <...>   # Run Artisan commands with xdebug
-bin/artisan tinker          # Run tinker
-bin/composer <...>          # Run composer
+php artisan <...>                         # Run Artisan commands inside devenv shell
+XDEBUG_TRIGGER=1 php artisan <...>        # Run with Xdebug enabled
+php artisan tinker                        # Run Tinker
+composer <...>                            # Run Composer
+npm <...>                                 # Run npm
 ```
 
 ### Testing
 
 ```bash
-bin/test                     # Run all tests
-bin/test --coverage          # Run with coverage
+php artisan test
+XDEBUG_MODE=coverage php artisan test --coverage
+devenv test                  # Build the environment and run the test suite
 ```
 
 ### Database Management
 
 ```bash
-bin/artisan migrate          # Run migrations
+php artisan migrate
+devenv tasks run github-rss:seed  # Recreate and seed the development database
 ```
 
 ---
