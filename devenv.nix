@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   laravelEnv = {
@@ -153,6 +158,68 @@ in
     vite = {
       exec = "npm run dev -- --host=127.0.0.1 --port=${builtins.toString config.processes.vite.ports.http.value} --strictPort";
       ports.http.allocate = 5173;
+    };
+  };
+
+  profiles.production.module = {
+    unsetEnvVars = [ "APP_URL" ];
+
+    env = {
+      APP_ENV = "production";
+      APP_DEBUG = "false";
+    };
+
+    tasks = {
+      "github-rss:composer-install".exec = lib.mkForce ''
+        composer install --no-interaction --no-dev --prefer-dist --optimize-autoloader --no-scripts
+        rm -f bootstrap/cache/packages.php bootstrap/cache/services.php
+        php artisan package:discover --ansi
+      '';
+
+      "github-rss:migrate".before = lib.mkForce [ ];
+
+      "github-rss:restore-docker-database" = {
+        exec = ''
+          dump="$DEVENV_ROOT/.devenv/docker-postgres.dump"
+
+          if [ -f "$dump" ]; then
+            PGPASSWORD="$DB_PASSWORD" pg_restore \
+              --exit-on-error \
+              --clean \
+              --if-exists \
+              --no-owner \
+              --no-privileges \
+              --host "$DB_HOST" \
+              --port "$DB_PORT" \
+              --username "$DB_USERNAME" \
+              --dbname "$DB_DATABASE" \
+              "$dump"
+            touch "$DEVENV_ROOT/.devenv/docker-migration-complete"
+            rm "$dump"
+          fi
+        '';
+        after = [ "devenv:processes:postgres" ];
+      };
+
+      "github-rss:deploy" = {
+        exec = ''
+          npm run build
+          php artisan migrate --force --ansi
+          php artisan optimize
+        '';
+        after = [
+          "github-rss:bootstrap"
+          "github-rss:npm-install"
+          "github-rss:restore-docker-database"
+          "devenv:processes:redis"
+        ];
+      };
+    };
+
+    processes = {
+      server.after = lib.mkForce [ "github-rss:deploy" ];
+      queue.after = lib.mkForce [ "github-rss:deploy" ];
+      scheduler.after = lib.mkForce [ "github-rss:deploy" ];
     };
   };
 

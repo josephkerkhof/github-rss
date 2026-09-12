@@ -87,6 +87,22 @@ php artisan migrate
 devenv tasks run github-rss:seed  # Recreate and seed the development database
 ```
 
+### Deployment
+
+Pushes to `master` deploy through the self-hosted GitHub Actions runner. The
+production devenv profile installs optimized dependencies, builds frontend
+assets, migrates the database, warms Laravel's caches, and starts only the
+long-running production processes:
+
+```bash
+devenv --profile production up --detach server queue scheduler
+```
+
+The first production-profile deployment exports the existing Docker PostgreSQL
+database and restores it into devenv before running migrations. The legacy
+containers and Docker volume are stopped but retained for rollback; a marker in
+`.devenv/` prevents later deployments from importing the old snapshot again.
+
 ---
 
 This project demonstrates practical application of modern software engineering principles while solving a real-world problem of GitHub activity tracking.

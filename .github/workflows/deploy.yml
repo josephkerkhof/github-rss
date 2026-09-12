@@ -6,10 +6,46 @@ jobs:
   deploy:
     runs-on: self-hosted
     steps:
+      - uses: cachix/install-nix-action@v31
+
+      - uses: cachix/cachix-action@v16
+        with:
+          name: devenv
+
+      - name: Install devenv
+        run: command -v devenv >/dev/null 2>&1 || nix profile add nixpkgs#devenv
+
       - name: Pull latest code
         working-directory: ${{ vars.DEPLOY_PATH }}
         run: git pull origin master
 
+      - name: Prepare Docker database migration
+        working-directory: ${{ vars.DEPLOY_PATH }}
+        run: |
+          marker=.devenv/docker-migration-complete
+          dump=.devenv/docker-postgres.dump
+
+          if [ ! -f "$marker" ] && docker container inspect laravel-postgres >/dev/null 2>&1; then
+            mkdir -p .devenv
+            docker start laravel-postgres >/dev/null
+
+            for container in laravel-nginx laravel-queue laravel-scheduler laravel-app; do
+              if docker container inspect "$container" >/dev/null 2>&1; then
+                docker stop "$container"
+              fi
+            done
+
+            docker exec laravel-postgres sh -c 'exec pg_dump --format=custom --no-owner --no-privileges --username="$POSTGRES_USER" "$POSTGRES_DB"' > "$dump"
+
+            for container in laravel-redis laravel-postgres; do
+              if docker container inspect "$container" >/dev/null 2>&1; then
+                docker stop "$container"
+              fi
+            done
+          fi
+
       - name: Deploy
         working-directory: ${{ vars.DEPLOY_PATH }}
-        run: bin/deploy
+        run: |
+          devenv --profile production processes down || true
+          devenv --profile production up --detach server queue scheduler
