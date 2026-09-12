@@ -6,14 +6,13 @@ jobs:
   deploy:
     runs-on: self-hosted
     steps:
-      - uses: cachix/install-nix-action@v31
-
-      - uses: cachix/cachix-action@v16
-        with:
-          name: devenv
-
-      - name: Install devenv
-        run: command -v devenv >/dev/null 2>&1 || nix profile add nixpkgs#devenv
+      - name: Set up devenv
+        run: |
+          . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+          export NIX_CONFIG='experimental-features = nix-command flakes'
+          command -v devenv >/dev/null 2>&1 || nix profile add nixpkgs#devenv
+          printf '%s\n' /nix/var/nix/profiles/default/bin "$HOME/.nix-profile/bin" >> "$GITHUB_PATH"
+          printf '%s\n' "NIX_CONFIG=$NIX_CONFIG" >> "$GITHUB_ENV"
 
       - name: Pull latest code
         working-directory: ${{ vars.DEPLOY_PATH }}
