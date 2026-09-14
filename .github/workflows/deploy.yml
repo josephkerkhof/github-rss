@@ -13,6 +13,7 @@ jobs:
           command -v devenv >/dev/null 2>&1 || nix profile add nixpkgs#devenv
           printf '%s\n' /nix/var/nix/profiles/default/bin "$HOME/.nix-profile/bin" >> "$GITHUB_PATH"
           printf '%s\n' "NIX_CONFIG=$NIX_CONFIG" >> "$GITHUB_ENV"
+          printf '%s\n' "XDG_RUNTIME_DIR=/run/user/$(id -u)" >> "$GITHUB_ENV"
 
       - name: Pull latest code
         working-directory: ${{ vars.DEPLOY_PATH }}
