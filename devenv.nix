@@ -172,7 +172,7 @@ in
     tasks = {
       "github-rss:composer-install".exec = lib.mkForce ''
         composer install --no-interaction --no-dev --prefer-dist --optimize-autoloader --no-scripts
-        rm -f bootstrap/cache/packages.php bootstrap/cache/services.php
+        rm -f bootstrap/cache/*.php
         php artisan package:discover --ansi
       '';
 

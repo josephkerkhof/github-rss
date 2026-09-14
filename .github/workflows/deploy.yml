@@ -46,5 +46,19 @@ jobs:
       - name: Deploy
         working-directory: ${{ vars.DEPLOY_PATH }}
         run: |
+          unset RUNNER_TRACKING_ID
           devenv --profile production processes down || true
           devenv --profile production up --detach server queue scheduler
+
+          for process in server queue scheduler; do
+            for _ in {1..60}; do
+              if devenv --profile production processes status "$process" >/dev/null 2>&1; then
+                break
+              fi
+              sleep 1
+            done
+
+            devenv --profile production processes status "$process"
+          done
+
+          curl --fail --silent --show-error http://127.0.0.1:8000 >/dev/null
