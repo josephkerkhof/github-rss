@@ -49,7 +49,7 @@ jobs:
         run: |
           unset RUNNER_TRACKING_ID
           devenv --profile production processes down || true
-          devenv --profile production up --detach server queue scheduler
+          nohup devenv --profile production up server queue scheduler > .devenv/production.log 2>&1 < /dev/null &
 
           for process in server queue scheduler; do
             for _ in {1..60}; do
